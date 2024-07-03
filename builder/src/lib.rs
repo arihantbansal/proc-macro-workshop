@@ -50,6 +50,31 @@ pub fn derive(input: TokenStream) -> TokenStream {
                 self.current_dir = Some(current_dir);
                 self
             }
+
+            pub fn build(&mut self) -> Result<#name, Box<dyn std::error::Error>> {
+                if self.executable.is_none() {
+                    return Err("`executable` is None".into());
+                }
+
+                if self.args.is_none() {
+                    return Err("`args` is None".into());
+                }
+
+                if self.env.is_none() {
+                    return Err("`env` is None".into());
+                }
+
+                if self.current_dir.is_none() {
+                    return Err("`current_dir` is None".into());
+                }
+
+                Ok(#name {
+                    executable: self.executable.clone().unwrap(),
+                    args: self.args.clone().unwrap(),
+                    env: self.env.clone().unwrap(),
+                    current_dir: self.current_dir.clone().unwrap(),
+                })
+            }
         }
     };
 
